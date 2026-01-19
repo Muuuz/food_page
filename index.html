@@ -51,6 +51,8 @@
             border-radius: 20px;
             border: none;
             font-size: 16px;
+            <input type="text" id="searchInput" placeholder="Search food...">
+
         }
          
         .content {
@@ -396,22 +398,41 @@
 
 </body>
 <script>
+let activeCategory = 'all';
+
 function filterCategory(category) {
+    activeCategory = category;
+    applyFilters();
+}
+
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+function applyFilters() {
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
     const cards = document.querySelectorAll('.card');
 
     cards.forEach(card => {
-        const cardCategory = card.dataset.category;
+        const category = card.dataset.category;
+        const name = card.querySelector('.name').textContent.toLowerCase();
 
-        if (category === 'all' || cardCategory === category) {
-            card.style.display = 'block'; 
+        const matchesCategory =
+            activeCategory === 'all' || category === activeCategory;
+
+        const matchesSearch =
+            name.includes(searchValue);
+
+        if (matchesCategory && matchesSearch) {
+            card.style.display = 'block';
         } else {
-            card.style.display = 'none';  
+            card.style.display = 'none';
         }
     });
 }
 </script>
 
+
 </html>
+
 
 
 
